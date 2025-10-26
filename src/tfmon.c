@@ -97,9 +97,13 @@ int main(int argc, char *argv[]) {
         now = time(NULL);
         struct tm *tm_info = localtime(&now);
         strftime(files[number_of_files].timestamp, TIME_SIZE, "%Y-%m-%d %H:%M:%S", tm_info);
-        file_stream = fopen(files[number_of_files].path, "r");
-        fgets(files[number_of_files].text, TEXT_SIZE, file_stream);
-        fclose(file_stream);
+        if ((file_stream = fopen(files[number_of_files].path, "r")) != NULL) {
+            fgets(files[number_of_files].text, TEXT_SIZE, file_stream);
+            fclose(file_stream);
+        } else {
+            strcpy(files[number_of_files].timestamp, "File doesnt exists ");
+        }
+
         printf("\n");
         number_of_files++;
         argc--;
